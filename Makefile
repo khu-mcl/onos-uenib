@@ -50,6 +50,9 @@ docker-build: # @HELP build onos-uenib base Docker image
 images: # @HELP build all Docker images
 images: build docker-build
 
+docker-push:
+	docker push ${DOCKER_REPOSITORY}${TARGET}:${DOCKER_TAG}
+
 kind: # @HELP build Docker images and add them to the currently configured kind cluster
 kind: images
 	@if [ "`kind get clusters`" = '' ]; then echo "no kind cluster found" && exit 1; fi
