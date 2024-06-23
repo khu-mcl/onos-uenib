@@ -50,8 +50,7 @@ jobs:
         with:
           go-version-file: 'go.mod'
       - name: Build Docker image
-        run: |
-          docker-build
+        run: make images
 
   license-check:
     runs-on: ubuntu-latest
