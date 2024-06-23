@@ -32,9 +32,9 @@ test: # @HELP run the unit tests and source code validation producing a golang s
 test: mod-lint build linters license
 	go test -race github.com/onosproject/${TARGET}/...
 
-jenkins-test: # @HELP run the unit tests and source code validation producing a junit style report for Jenkins
-jenkins-test: mod-lint build linters license
-	TEST_PACKAGES=github.com/onosproject/${TARGET}/pkg/... ./build/build-tools/build/jenkins/make-unit
+#jenkins-test: # @HELP run the unit tests and source code validation producing a junit style report for Jenkins
+#jenkins-test: mod-lint build linters license
+#	TEST_PACKAGES=github.com/onosproject/${TARGET}/pkg/... ./build/build-tools/build/jenkins/make-unit
 
 helmit-uenib: integration-test-namespace # @HELP run helmit tests locally
 	helmit test -n test ./cmd/${TARGET_TEST} --suite uenib
@@ -42,6 +42,7 @@ helmit-uenib: integration-test-namespace # @HELP run helmit tests locally
 integration-tests: helmit-uenib # @HELP run helmit integration tests locally
 
 docker-build: # @HELP build onos-uenib base Docker image
+docker-build:
 	@go mod vendor
 	docker build . -f build/${TARGET}/Dockerfile \
 		-t onosproject/${TARGET}:${ONOS_TOPO_VERSION}
@@ -63,10 +64,10 @@ all: build images
 publish: # @HELP publish version on github and dockerhub
 	./build/build-tools/publish-version ${VERSION} onosproject/${TARGET}
 
-jenkins-publish: jenkins-tools # @HELP Jenkins calls this to publish artifacts
-	./build/bin/push-images
-	./build/build-tools/release-merge-commit
-	./build/build-tools/build/docs/push-docs
+#jenkins-publish: jenkins-tools # @HELP Jenkins calls this to publish artifacts
+#	./build/bin/push-images
+#	./build/build-tools/release-merge-commit
+#	./build/build-tools/build/docs/push-docs
 
 clean:: # @HELP remove all the build artifacts
 	rm -rf ./build/_output ./vendor ./cmd/${TARGET}/${TARGET} ./cmd/dummy/dummy
