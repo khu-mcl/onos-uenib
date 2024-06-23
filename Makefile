@@ -10,7 +10,6 @@ export GO111MODULE=on
 
 TARGET := onos-uenib
 TARGET_TEST := onos-uenib-tests
-GITHUB_REPOSITORY := khu-mcl/
 DOCKER_TAG ?= latest
 ONOS_PROTOC_VERSION := v0.6.3
 
@@ -30,11 +29,11 @@ build:
 
 test: # @HELP run the unit tests and source code validation producing a golang style report
 test: mod-lint build linters license
-	go test -race github.com/${GITHUB_REPOSITORY}${TARGET}/...
+	go test -race github.com/onosproject/${TARGET}/...
 
 #jenkins-test: # @HELP run the unit tests and source code validation producing a junit style report for Jenkins
 #jenkins-test: mod-lint build linters license
-#	TEST_PACKAGES=github.com/${GITHUB_REPOSITORY}${TARGET}/pkg/... ./build/build-tools/build/jenkins/make-unit
+#	TEST_PACKAGES=github.com/$onosproject/${TARGET}/pkg/... ./build/build-tools/build/jenkins/make-unit
 
 helmit-uenib: integration-test-namespace # @HELP run helmit tests locally
 	helmit test -n test ./cmd/${TARGET_TEST} --suite uenib
