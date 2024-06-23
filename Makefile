@@ -10,6 +10,7 @@ export GO111MODULE=on
 
 TARGET := onos-uenib
 TARGET_TEST := onos-uenib-tests
+GITHUB_REPOSITORY := khu-mcl/
 DOCKER_TAG ?= latest
 ONOS_PROTOC_VERSION := v0.6.3
 
@@ -29,11 +30,11 @@ build:
 
 test: # @HELP run the unit tests and source code validation producing a golang style report
 test: mod-lint build linters license
-	go test -race github.com/onosproject/${TARGET}/...
+	go test -race github.com/${GITHUB_REPOSITORY}${TARGET}/...
 
 #jenkins-test: # @HELP run the unit tests and source code validation producing a junit style report for Jenkins
 #jenkins-test: mod-lint build linters license
-#	TEST_PACKAGES=github.com/onosproject/${TARGET}/pkg/... ./build/build-tools/build/jenkins/make-unit
+#	TEST_PACKAGES=github.com/${GITHUB_REPOSITORY}${TARGET}/pkg/... ./build/build-tools/build/jenkins/make-unit
 
 helmit-uenib: integration-test-namespace # @HELP run helmit tests locally
 	helmit test -n test ./cmd/${TARGET_TEST} --suite uenib
@@ -56,12 +57,12 @@ docker-push:
 kind: # @HELP build Docker images and add them to the currently configured kind cluster
 kind: images
 	@if [ "`kind get clusters`" = '' ]; then echo "no kind cluster found" && exit 1; fi
-	kind load docker-image onosproject/${TARGET}:${DOCKER_TAG}
+	kind load docker-image ${DOCKER_REPOSITORY}${TARGET}:${DOCKER_TAG}
 
 all: build images
 
 publish: # @HELP publish version on github and dockerhub
-	./build/build-tools/publish-version ${VERSION} onosproject/${TARGET}
+	./build/build-tools/publish-version ${VERSION} ${DOCKER_REPOSITORY}${TARGET}
 
 #jenkins-publish: jenkins-tools # @HELP Jenkins calls this to publish artifacts
 #	./build/bin/push-images
