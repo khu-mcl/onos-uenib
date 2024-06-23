@@ -11,7 +11,6 @@ export GO111MODULE=on
 TARGET := onos-uenib
 TARGET_TEST := onos-uenib-tests
 DOCKER_TAG ?= latest
-ONOS_TOPO_VERSION := latest
 ONOS_PROTOC_VERSION := v0.6.3
 
 build-tools:=$(shell if [ ! -d "./build/build-tools" ]; then cd build && git clone https://github.com/onosproject/build-tools.git; fi)
@@ -45,7 +44,7 @@ docker-build: # @HELP build onos-uenib base Docker image
 docker-build:
 	@go mod vendor
 	docker build . -f build/${TARGET}/Dockerfile \
-		-t onosproject/${TARGET}:${ONOS_TOPO_VERSION}
+		-t ${DOCKER_REPOSITORY}${TARGET}:${DOCKER_TAG}
 	@rm -rf vendor
 
 images: # @HELP build all Docker images
@@ -57,7 +56,7 @@ docker-push:
 kind: # @HELP build Docker images and add them to the currently configured kind cluster
 kind: images
 	@if [ "`kind get clusters`" = '' ]; then echo "no kind cluster found" && exit 1; fi
-	kind load docker-image onosproject/${TARGET}:${ONOS_TOPO_VERSION}
+	kind load docker-image onosproject/${TARGET}:${DOCKER_TAG}
 
 all: build images
 
