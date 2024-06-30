@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2024 Kyunghee University
-# git action test
 
 export CGO_ENABLED=1
 export GO111MODULE=on
